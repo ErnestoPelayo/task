@@ -6,13 +6,40 @@ import {
 } from "@headlessui/react";
 import { NewspaperIcon } from "@heroicons/react/24/outline";
 import FormTask from "./FormTask";
+import { TaskActions } from "../reducers/task-reducer";
+import { useForm } from "react-hook-form";
+import { TaskClass } from "../types";
 
 type PropsModal = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  dispatch: React.Dispatch<TaskActions>;
 };
 
-export default function Modal({ open, setOpen }: PropsModal) {
+export default function Modal({ open, setOpen, dispatch }: PropsModal) {
+
+  //const [initialValues,setInitialValues]
+
+  const initialValues: TaskClass = {
+    id: 0,
+    title: "",
+    description: "",
+    state: "",
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm({ defaultValues: initialValues });
+
+  const handleForm = (data:TaskClass) => {
+    dispatch({type:"add-task",payload:{item:data}})
+    setOpen(false)
+    reset()
+  };
+
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -43,31 +70,23 @@ export default function Modal({ open, setOpen }: PropsModal) {
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Es necesario llenar todos los campos 
+                      Es necesario llenar todos los campos
                     </p>
                   </div>
                   <div className="w-full">
-                  <FormTask/>
+                    <form 
+                    onSubmit={handleSubmit(handleForm)}
+                    noValidate>
+                      <FormTask register={register} errors={errors} />
+                      <input
+                        type="submit"
+                        className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto "
+                        value={"Guardar"}
+                      />
+                    </form>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto "
-              >
-                Guardar
-              </button>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto "
-              >
-                Cerrar
-              </button>
             </div>
           </DialogPanel>
         </div>

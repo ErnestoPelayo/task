@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import Modal from "../components/Modal";
+import { initialState, TaskReducer } from "../reducers/task-reducer";
 
 function Index() {
 
   const [open,setOpen] = useState<boolean>(false)
 
+  const [state,dispatch] = useReducer(TaskReducer,initialState)
+  
   return (
     <div>
       <button
@@ -15,7 +18,19 @@ function Index() {
       >
         Crear Tarea
       </button>
-      <Modal open={open} setOpen={setOpen}  />
+      {
+        state?.data.length!>0 ? <>
+          {
+            state?.data.map((item)=>{
+              return <p>{item.title} {item.id}</p>
+            })
+          }
+        </> :
+        <div className="mt-10">
+          <p className="p-2 text-center bg-red-400">No hay notas</p>
+        </div>  
+      }
+      <Modal open={open} setOpen={setOpen} dispatch={dispatch}  />
     </div>
   );
 }
