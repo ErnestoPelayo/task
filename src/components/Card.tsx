@@ -3,6 +3,7 @@ import { TaskClass } from "../types";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ModalEditTask from "./ModalEditTask";
 import { useState } from "react";
+import 'react-toastify/dist/ReactToastify.css';
 
 type PropsCard = {
   task: TaskClass;
@@ -13,7 +14,7 @@ const Card = ({ task }: PropsCard) => {
   const removeTask = useStoreTask(state=>state.removeTask)
   const [open, setOpen] = useState<boolean>(false);
   const [idTask,setIdTask] = useState(task.id)
-  
+
   const clickHandled = () => {
     setOpen(true)
     setIdTask(idTask)

@@ -2,12 +2,18 @@ import { useState } from "react";
 import Modal from "../components/Modal";
 import Tasks from "../components/Tasks";
 import { useStoreTask } from "../store/store-task";
+import { toast, ToastContainer } from "react-toastify";
 
 function Index() {
   const [open, setOpen] = useState<boolean>(false);
 
   const task = useStoreTask((state) => state.tasks);
   const clearTasks = useStoreTask((state) => state.clearTasks);
+
+  const clear = () =>{
+    toast.success("Se limpio el tablero")
+    clearTasks()
+  }
 
   return (
     <div>
@@ -26,7 +32,7 @@ function Index() {
           className="mt-5 bg-red-500 
             hover:bg-red-600 hover:scale-105 cursor-pointer 
             text-white font-bold p-3 px-3 rounded-lg"
-          onClick={() => clearTasks()}
+          onClick={clear}
         >
           Limpiar
         </button>:[]
@@ -61,6 +67,7 @@ function Index() {
           <p className="p-2 text-center bg-red-100">No hay notas</p>
         </div>
       )}
+        <ToastContainer />
 
       <Modal open={open} setOpen={setOpen} />
     </div>

@@ -9,6 +9,7 @@ import { TaskClass } from "../types";
 import FormEditTask from "./FormEditTask";
 import { useForm } from "react-hook-form";
 import { useStoreTask } from "../store/store-task";
+import { toast } from "react-toastify";
 
   type PropsModal = {
     open: boolean
@@ -37,6 +38,7 @@ const ModalEditTask = ({open,setOpen,task}:PropsModal) => {
     updateTask(data)
     reset();
     setOpen(false);
+    toast.success("Tarea Actualizada")
   };
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">

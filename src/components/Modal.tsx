@@ -9,6 +9,7 @@ import FormTask from "./FormTask"
 import { useForm } from "react-hook-form"
 import { TaskFormData } from "../types";
 import { useStoreTask } from "../store/store-task";
+import { toast } from "react-toastify";
 
 type PropsModal = {
   open: boolean
@@ -32,6 +33,7 @@ export default function Modal({ open, setOpen }: PropsModal) {
 
   const handleForm = (data: TaskFormData) => {
     addTask(data);
+    toast.success("Tarea creada correctamente")
     reset();
     setOpen(false);
   };
