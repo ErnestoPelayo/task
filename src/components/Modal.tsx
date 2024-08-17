@@ -4,40 +4,36 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { NewspaperIcon } from "@heroicons/react/24/outline";
-import FormTask from "./FormTask";
-import { TaskActions } from "../reducers/task-reducer";
-import { useForm } from "react-hook-form";
-import { TaskClass } from "../types";
+import { NewspaperIcon } from "@heroicons/react/24/outline"
+import FormTask from "./FormTask"
+import { useForm } from "react-hook-form"
+import { TaskFormData } from "../types";
+import { useStoreTask } from "../store/store-task";
 
 type PropsModal = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  dispatch: React.Dispatch<TaskActions>;
-};
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export default function Modal({ open, setOpen, dispatch }: PropsModal) {
-
-  //const [initialValues,setInitialValues]
-
-  const initialValues: TaskClass = {
-    id: 0,
-    title: "",
-    description: "",
-    state: "",
-  };
+export default function Modal({ open, setOpen }: PropsModal) {
+  const addTask = useStoreTask((state) => state.addTask);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
-  } = useForm({ defaultValues: initialValues });
+    reset,
+  } = useForm({
+    defaultValues: {
+      title: "",
+      description: "",
+    },
+  });
 
-  const handleForm = (data:TaskClass) => {
-    dispatch({type:"add-task",payload:{item:data}})
-    setOpen(false)
-    reset()
+  const handleForm = (data: TaskFormData) => {
+    addTask(data);
+    reset();
+    setOpen(false);
   };
 
   return (
@@ -74,9 +70,7 @@ export default function Modal({ open, setOpen, dispatch }: PropsModal) {
                     </p>
                   </div>
                   <div className="w-full">
-                    <form 
-                    onSubmit={handleSubmit(handleForm)}
-                    noValidate>
+                    <form onSubmit={handleSubmit(handleForm)} noValidate>
                       <FormTask register={register} errors={errors} />
                       <input
                         type="submit"
