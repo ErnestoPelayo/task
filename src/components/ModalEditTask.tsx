@@ -1,23 +1,24 @@
 import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { NewspaperIcon } from "@heroicons/react/24/outline"
-import FormTask from "./FormTask"
-import { useForm } from "react-hook-form"
-import { TaskFormData } from "../types";
+    Dialog,
+    DialogBackdrop,
+    DialogPanel,
+    DialogTitle,
+  } from "@headlessui/react";
+  import { PencilIcon } from "@heroicons/react/24/outline"
+import { TaskClass } from "../types";
+import FormEditTask from "./FormEditTask";
+import { useForm } from "react-hook-form";
 import { useStoreTask } from "../store/store-task";
 
-type PropsModal = {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+  type PropsModal = {
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    task : TaskClass
+  }
+  
+const ModalEditTask = ({open,setOpen,task}:PropsModal) => {
 
-export default function Modal({ open, setOpen }: PropsModal) {
-  const addTask = useStoreTask((state) => state.addTask);
-
+  const updateTask = useStoreTask(state=>state.updateTask)
   const {
     register,
     handleSubmit,
@@ -25,17 +26,18 @@ export default function Modal({ open, setOpen }: PropsModal) {
     reset,
   } = useForm({
     defaultValues: {
-      title: "",
-      description: "",
+      id:task.id,
+      title: task.title,
+      description: task.description,
+      state:task.state
     },
   });
 
-  const handleForm = (data: TaskFormData) => {
-    addTask(data);
+  const handleForm = (data: TaskClass) => {
+    updateTask(data)
     reset();
     setOpen(false);
   };
-
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -51,10 +53,10 @@ export default function Modal({ open, setOpen }: PropsModal) {
           >
             <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
-                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                  <NewspaperIcon
+                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <PencilIcon
                     aria-hidden="true"
-                    className="h-6 w-6 text-green-600"
+                    className="h-6 w-6 text-yellow-600"
                   />
                 </div>
                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
@@ -62,20 +64,20 @@ export default function Modal({ open, setOpen }: PropsModal) {
                     as="h3"
                     className="text-base font-semibold leading-6 text-gray-900"
                   >
-                    Crear nueva tarea
+                    Actualizar Tarea
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Es necesario llenar todos los campos
+                      task id: {task.id}
                     </p>
                   </div>
                   <div className="w-full">
                     <form onSubmit={handleSubmit(handleForm)} noValidate>
-                      <FormTask register={register} errors={errors} />
+                      <FormEditTask register={register} errors={errors} />
                       <input
                         type="submit"
-                        className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500  sm:w-auto "
-                        value={"Guardar"}
+                        className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:w-auto "
+                        value={"Actualizar Tarea"}
                       />
                     </form>
                   </div>
@@ -86,5 +88,7 @@ export default function Modal({ open, setOpen }: PropsModal) {
         </div>
       </div>
     </Dialog>
-  );
+  )
 }
+
+export default ModalEditTask

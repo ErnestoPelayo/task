@@ -8,3 +8,4 @@ export type TaskClass = {
 }
 
 export type TaskFormData = Pick<TaskClass,'title'| 'description'>
+export type TaskFormDataEdit = Pick<TaskClass,'title'| 'description'|'state'>

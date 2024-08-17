@@ -8,7 +8,7 @@ type PropsTask ={
 }
 
 const Tasks = ({title,color,data}:PropsTask) => {
-  
+
   return (
       <div className="border border-gray-700 rounded-lg h-full mt-10">
           <p className={
@@ -26,10 +26,7 @@ const Tasks = ({title,color,data}:PropsTask) => {
                 )
               })
             }
-          </>
-          
-
-
+          </>          
       </div>
   )
 }
