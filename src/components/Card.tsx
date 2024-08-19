@@ -37,7 +37,7 @@ const Card = ({ task }: PropsCard) => {
             <p className="text-lg font-bold">{task.title.toUpperCase()}</p>
           </div>
           <button className="relative" onClick={removeTaskHandled}>
-            <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+            <XMarkIcon aria-hidden="true" className="h-6 w-6 hover:text-red-600" />
           </button>
         </div>
         <p className="text-sm font-extralight">

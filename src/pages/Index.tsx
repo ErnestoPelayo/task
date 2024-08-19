@@ -39,9 +39,8 @@ function Index() {
         }
       </div>
 
-      {task?.length! > 0 ? (
-        <div className="grid grid-cols-4 gap-2 ">
-          <Tasks
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-2">
+        <Tasks
             title="Pendientes"
             color={1}
             data={task?.filter((item) => item.state === "Pendiente")!}
@@ -61,12 +60,9 @@ function Index() {
             color={4}
             data={task?.filter((item) => item.state === "Archivadas")!}
           />
-        </div>
-      ) : (
-        <div className="mt-10">
-          <p className="p-2 text-center bg-red-100">No hay notas</p>
-        </div>
-      )}
+      </div>
+
+      
         <ToastContainer />
 
       <Modal open={open} setOpen={setOpen} />

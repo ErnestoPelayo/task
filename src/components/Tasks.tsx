@@ -10,7 +10,7 @@ type PropsTask ={
 const Tasks = ({title,color,data}:PropsTask) => {
 
   return (
-      <div className="border border-gray-700 rounded-lg h-full mt-10">
+      <div className="border border-gray-700 rounded-lg mt-10 ">
           <p className={
               color === 1 ?`rounded-t-lg font-bold p-1 text-center bg-yellow-400` : 
               color === 2 ?`rounded-t-lg font-bold p-1 text-center bg-blue-400`:
