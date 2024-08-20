@@ -3,6 +3,7 @@ import Modal from "../components/Modal";
 import Tasks from "../components/Tasks";
 import { useStoreTask } from "../store/store-task";
 import { toast, ToastContainer } from "react-toastify";
+import Info from "../components/Info";
 
 function Index() {
   const [open, setOpen] = useState<boolean>(false);
@@ -10,13 +11,15 @@ function Index() {
   const task = useStoreTask((state) => state.tasks);
   const clearTasks = useStoreTask((state) => state.clearTasks);
 
-  const clear = () =>{
-    toast.success("Se limpio el tablero")
-    clearTasks()
-  }
+  const clear = () => {
+    toast.success("Se limpio el tablero");
+    clearTasks();
+  };
 
   return (
     <div>
+
+      <Info />
       <div className="flex gap-2">
         <button
           className="mt-5 bg-green-500 
@@ -26,21 +29,23 @@ function Index() {
         >
           Crear Tarea
         </button>
-        {
-          task.length>0 ? 
+        {task.length > 0 ? (
           <button
-          className="mt-5 bg-red-500 
+            className="mt-5 bg-red-500 
             hover:bg-red-600 hover:scale-105 cursor-pointer 
             text-white font-bold p-3 px-3 rounded-lg"
-          onClick={clear}
-        >
-          Limpiar
-        </button>:[]
-        }
+            onClick={clear}
+          >
+            Limpiar
+          </button>
+        ) : (
+          []
+        )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-2">
-        <Tasks
+      {task.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-2">
+          <Tasks
             title="Pendientes"
             color={1}
             data={task?.filter((item) => item.state === "Pendiente")!}
@@ -60,10 +65,14 @@ function Index() {
             color={4}
             data={task?.filter((item) => item.state === "Archivadas")!}
           />
-      </div>
+        </div>
+      ) : (
+        <>
+        <p className="text-lg font-bold p-10"> No hay notas </p>
+        </>
+      )}
 
-      
-        <ToastContainer />
+      <ToastContainer />
 
       <Modal open={open} setOpen={setOpen} />
     </div>
