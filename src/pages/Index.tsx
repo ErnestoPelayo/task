@@ -26,8 +26,8 @@ function Index() {
 const taskss = localStorageTasks()
 
   useEffect(()=> {
-    localStorage.setItem('task',JSON.stringify(task))
-  },[taskss])
+    localStorage.setItem('tasks',JSON.stringify(task))
+  },[task])
 
   return (
     <div>
