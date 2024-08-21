@@ -3,6 +3,12 @@ import { TaskClass, TaskFormData } from "../types";
 import {v4 as uuidv4} from "uuid"
 import { dbTask } from "../helpers/dbTask";
 
+
+const localStorageTasks = () : TaskClass[]=> {
+    const tasks = localStorage.getItem('tasks')
+    return tasks ? JSON.parse(tasks) : dbTask
+}
+
 type TaskState = {
     tasks : TaskClass[]
     addTask : (task : TaskFormData)=> void,
@@ -23,7 +29,7 @@ const createTask =(task :TaskFormData ) : TaskClass =>{
 }
 
 export const useStoreTask = create<TaskState>((set,get)=>({
-    tasks : dbTask,
+    tasks : localStorageTasks(),
     addTask : (task)=>{     
         const newTask = createTask(task)
         set((state)=>({

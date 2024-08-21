@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import Tasks from "../components/Tasks";
 import { useStoreTask } from "../store/store-task";
 import { toast, ToastContainer } from "react-toastify";
 import Info from "../components/Info";
+import { TaskClass } from "../types";
 
 function Index() {
   const [open, setOpen] = useState<boolean>(false);
@@ -11,10 +12,22 @@ function Index() {
   const task = useStoreTask((state) => state.tasks);
   const clearTasks = useStoreTask((state) => state.clearTasks);
 
+
   const clear = () => {
     toast.success("Se limpio el tablero");
     clearTasks();
   };
+
+  const localStorageTasks = () : TaskClass[]=> {
+    const tasks = localStorage.getItem('tasks')
+    return tasks ? JSON.parse(tasks) : task
+}
+
+const taskss = localStorageTasks()
+
+  useEffect(()=> {
+    localStorage.setItem('task',JSON.stringify(task))
+  },[taskss])
 
   return (
     <div>
@@ -29,7 +42,7 @@ function Index() {
         >
           Crear Tarea
         </button>
-        {task.length > 0 ? (
+        {taskss.length > 0 ? (
           <button
             className="mt-5 bg-red-500 
             hover:bg-red-600 hover:scale-105 cursor-pointer 
